@@ -18,7 +18,7 @@
 	</benchmark>
 
 	<project name="base-vs-jumpy" job="pbs-gen">
-		<runtag machine="zuse" benchmark="no-pigeons" tag="*ALL*"/>
+		<runtag machine="zuse" benchmark="no-pigeons" tag="*all*"/>
 	</project>
 
 </runscript>

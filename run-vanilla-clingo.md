@@ -32,9 +32,9 @@ Line 15  can be mostly left as it is. The one change we are making is adding an 
 #### Project changes
 The last changes needed are to lines 25-27. First, we want to name our project something meaningful. We set the value of *name* to "base-vs-jumpy"
 
-The value of *tag* is no longer referring to anything. Both settings that we have different tags but we still want to run both in this benchmark. To manage this we simply set the value of *tag* to the special value \*ALL\*
+The value of *tag* is no longer referring to anything. Both settings that we have different tags but we still want to run both in this benchmark. To manage this we simply set the value of *tag* to the special value \*all\*
 ```
 <project name="base-vs-jumpy" job="pbs-gen">
-	<runtag machine="zuse" benchmark="no-pigeons" tag="*ALL*"/>
+	<runtag machine="zuse" benchmark="no-pigeons" tag="*all*"/>
 </project>
 ```

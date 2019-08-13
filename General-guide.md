@@ -160,7 +160,7 @@ Projects are where all of the above elements come together to define a complete 
 </project>  
 ```  
 
-Previously, all of the components from before were independent of each other. When defining a project we pick the components we want to form the benchmark. The values of *job*, *machine*, *benchmark* and *tag* refers to previously defined components. The *tag* refers to all settings that have that same tag. There is also a special value that *tag* can take, \*ALL\*, that refers to all settings. The value of *name* is what gives the name of the second folder in the folder structure reference before.
+Previously, all of the components from before were independent of each other. When defining a project we pick the components we want to form the benchmark. The values of *job*, *machine*, *benchmark* and *tag* refers to previously defined components. The *tag* refers to all settings that have that same tag. There is also a special value that *tag* can take, \*all\*, that refers to all settings. The value of *name* is what gives the name of the second folder in the folder structure reference before.
   
 
 The project in lines 21 to 23 is defined in the same manner. The only difference is that it will use a seqjob instead of a pbsjob.  
