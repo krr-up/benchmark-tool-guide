@@ -229,9 +229,13 @@ time, models, choices, conflicts, restarts, optimum, status, interrupted, error,
 This is a list of things to keep in mind when starting to run the benchmarks:
 - Make sure that:
 	the runsolver in the seq-generic.sh file has the correct name
+	
 	the single.pbs file loads the correct environment
+	
 	the bash script is executable
+	
 	the benchmark folder is correct and is ideally an absolute path
+	
 	the cmdline in settings contain the "--stats" argument
 
 
