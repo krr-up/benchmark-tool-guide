@@ -6,25 +6,31 @@ This guide will teach you about the xml configuration file, how to use that file
  Understanding the xml runscript  is the most important part of using the benchmark tool. It controls every aspect of the process. So, it is very important to know how the various components relate to each other and how they form the end benchmark.
 
 ## Example Runscript
-In the next few sections, I will explain how the example file [example file](https://github.com/potassco/benchmark-tool/blob/master/runscripts/runscript-example.xml) works and how to adapt this to your own purposes.
+In the next few sections, I will explain how the example file [runscript-example.xml](https://github.com/potassco/benchmark-tool/blob/master/runscripts/runscript-example.xml) works and how to adapt this to your own purposes.
 
 ### Folder structure
 When running the runscript (we will see how later) a folder structure is created. The name of the first folder in the tree is given by the first line in the script:
 ```<runscript  output="output-folder">```
 In this case, the name of the of the folder is "output-folder". It is recommended that the name should be changed to something meaningful and representative of the benchmark you are running.
 
-the second folder in the structure is given by the information in line 3:
+The name of second folder is given by the project name which is explained later.
+
+The third folder in the structure is given by the information in line 3:
 ```<machine  name="zuse"  cpu="24x8xE5520@2.27GHz"  memory="24GB"/>```
 The values of *cpu* and *memory* are irrelevant for the naming. The second folder will be named  using the value in *name*. In this case, "zuse".
 
+After this, the folders are named based on the structure of the benchmark instances and the instance names.
+
 ### Configuration
 Line 5 is where we first start setting up how the benchmarks will actually run:
-```<config  name="seq-generic"  template="templates/seq-generic.sh"/>```
-This line states how a **configuration** will run. The *name* is just in ID that we can reference later. the value on *template* refers to a template file that shows how to run each instance and configuration. 
+```
+<config  name="seq-generic"  template="templates/seq-generic.sh"/>
+```
+This line states how a **configuration** will run. The *name* is just an ID that we can reference later. The value on *template* refers to a template file that shows how to run each instance and configuration. 
 
 ### The run template
 
-Taking a look at [templates/seq-generic.sh](https://github.com/potassco/benchmark-tool/blob/master/templates/seq-generic.sh) it can seem complicated. The first relevant line, line 4, is just a bash script that will uncompress your instance file if it is compressed. If the file is just a regular text file it will just print it out.
+Taking a look at [templates/seq-generic.sh](https://github.com/potassco/benchmark-tool/blob/master/templates/seq-generic.sh) it can seem complicated. The first relevant line, line 4, is just a bash script that will uncompress your instance file if it is compressed. If the file is just a regular text file it will just print the text to the standard output.
 The next relevant line, line 10, is where we actually run the instance with clingo. The first part of the line ```[[ -e .finished ]]``` just checks to see if a .finished file exists. If it exists, the script is done executing. If it doesn't exist, it proceed with running the instance.
 ```
 $CAT "{run.file}" | "{run.root}/programs/runsolver-3.3.4" \
@@ -41,7 +47,7 @@ $CAT "{run.file}" | "{run.root}/programs/runsolver-3.3.4" \
 ```{run.args}``` are the arguments to be used by the solver
 
 The script has a default memory limit of 20 000 MB which can be changed by modifying the value of the ```-M``` argument. 
-If you don't have the specific runsolver used in the script, you can simply change its name to match the one you have.
+If you don't have the specific runsolver used in the script, you can simply change its name to match the one you have. As can be seen from the file the runsolver is expected to be in the programs folder of the benchmark-tool folder.
 
 ### Run settings
 The run settings are given in the example from line 7 to line 11. line 7 starts describing how the *system* looks like. The values of *name* and *version* work together to describe the name of a **bash script** named **{name}-{version}** and is found in the **programs** folder of the benchmark-tool. So, in the case of the example, the solver given to the template file described in the configuration is *programs/clingo-4.5.4*. Since this is a regular bash script you can put whatever you want in here.
@@ -59,26 +65,36 @@ Small tip: If your instances have an "#include" directive they may not work unle
 -W {run.timeout} \
 "{run.root}/programs/{run.solver}" {run.file} {run.args} 
 ```
+
+Another fix is to change the instances so that they do not contain those "#include" directives. This is, however, not always possible or the best course of action.
+
 ### Run arguments
 The arguments that are going to be used by clingo are given in line 9.
 ```<setting  name="setting-1"  cmdline="'--stats --quiet=1,0'"  tag="basic" />```
-The value of *name* is an identifier for the arguments given in *cmdline* and will appear as the name of this configuration when evaluating the results. The value of *cmdline* can be any valid string that can be given to the solver you are using. Finally, the value of *tag* is also an identifier for this configuration except that this is the one that is used to reference it withing this runscript.
+The value of *name* is an identifier for the arguments given in *cmdline* and will appear as the name of this configuration when evaluating the results. The value of *cmdline* can be any valid string that can be given to the solver you are using. Finally, the value of *tag* is also an identifier for this configuration but only within this runscript.
 
-If you are looking to run more than one configuration, you can just copy and paste the line and edit the values as necesary. Keep in mind that *name* has to be unique *name*, values of tag can be the same and should be the same for configurations that are meant to be run in the same group.
+If you are looking to run more than one configuration, you can just copy and paste the line and edit the values as necesary. Make sure that the new settings are **above** the closing ```</system>```. Keep in mind that *name* has to be unique *name*, values of tag can be the same and should be the same for configurations that are meant to be run in the same group.
 
 ### Defining Jobs
 A job is basically where you set the parameters on how long a single clingo run should last and how long all runs should last. In the example file this is defined in two places, line 13 and 15. We will start with line 13.
-```<seqjob  name="seq-gen"  timeout="900"  runs="1"  script_mode="timeout"  walltime="50:00:00"  parallel="1"/>```
+
+```
+<seqjob  name="seq-gen"  timeout="900"  runs="1"  script_mode="timeout"  walltime="50:00:00"  parallel="1"/>
+```
 The benchmark tool can generate two types of jobs. Seqjobs that are meant to be run a on regular machine and pbsjobs that are meant to be run on a cluster with SLURM. Line 13 defines a seqjob, as seen at the beginning of the line. As usual, it has a *name* which is an identifier for this particular job. *timeout* is the maximum amount of time in seconds a single run can take, *runs* is how many runs will be done for each instance. *walltime* is the maximum amount of time that running all instances can take(format is HH:MM:SS).
 
 Line 15 defines a pbsjob:
-```<pbsjob  name="pbs-gen"  timeout="1200"  runs="1"  script_mode="timeout"  walltime="23:59:59"  cpt="4"/>```
+```
+<pbsjob  name="pbs-gen"  timeout="1200"  runs="1"  script_mode="timeout"  walltime="23:59:59"  cpt="4"/>
+```
 Most values are the same as with seqjobs. *cpt* defines how many cores can be used per run. *cpt* stands for "cores per task".
 
 For pbsjobs, there is an interaction between *timeout* and *walltime*. When creating the benchmarks, the walltime will always be respected. So, if its not possible to run all instances sequentially inside the walltime specified, they will be split into as many jobs as necessary so that the walltime is never surpassed. For example, if the walltime is 25 hours and you have 100 instances with a timeout of 1 hour each, there will be 4 jobs, each with 25 instances which will be run in parallel.
 
+As a final note, this pbsjob example do not include the *partition* argument. Its value is the name of the partition that will be used when running the jobs in the SLURM machine. The default value for it is "kr". Other values for this argument can be "short" and "long". If short is used the walltime can not exceed 24 hours.
+
 ### Benchmarks - Instance location
-Lines 17 to 19 indicate where the instances are located. The value in *name* is the same as usual. The value of path is, of course, the path of the folder containing the instances. The folder can also contain folders in it. If there are several folders with instances, the folder where the instances are located is taken a "domain" and there will be an additional separation of the results using this "domains". 
+Lines 17 to 19 indicate where the instances are located. The value in *name* is the same as usual. The value of path is, of course, the path of the folder containing the instances. The folder is recursively searched. If there are several folders with instances, the folder where the instances are located is taken as a "domain" and there will be an additional separation of the results using this "domains". 
 If there are folders that should not be included in the benchmark instances, the ignore tag can be used to define a *prefix* which will be ignored.
 
 ### Projects
@@ -97,7 +113,7 @@ Running the script is very simple. Simply go to the benchmark-tool folder and ru
 ```
 $ ./bgen path/to/runscript.xml
 ```
-where runscript.xml is the runscript that you want to use. This will create a folder structure using the values given in the script.
+where runscript.xml is the runscript that you want to use. This will create a folder structure using the values given in the script. To start running the bencharmk, navigate 3 folders down to the folder with the name of the machine. There should be either a python or bash file named "start" with the appropriate extension. Execute this file to run the benchmarks.
 
 
 ## Evaluating
@@ -110,6 +126,20 @@ The script writes the results with an xml format to the standard output. We save
 Once we have the evaluated benchmarks we can convert them into a formatted csv file. We do this with the "bconv" script:
 ```
 $ ./bconv benchmark-evaluated.xml results.csv -m time:t
-
-The run time will now be found in a csv named results.csv. 
 ```
+The run time will now be found in a csv named results.csv. The .m also takes multiple values. The format is a comma separated list of measures of form name[:{t,to,-}] to include in table (optional argument determines coloring)
+
+
+How the results are evaluated depends on the value of *measures* that is found in line 7. The value refers to a python file with the same name located in the directory:
+```
+benchmark-tool/src/benchmarktool/resultparser
+```
+The value in the example is "clasp". This means that we use the file [clasp.py](https://github.com/potassco/benchmark-tool/blob/master/src/benchmarktool/resultparser/clasp.py) to evaluate the results. 
+Which values can be given to the -m option also depend on what values the file can process. In this case the values are:
+```
+time, models, choices, conflicts, restarts, optimum, status, interrupted, error, memerror
+```
+
+
+
+
