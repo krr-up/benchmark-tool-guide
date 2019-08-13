@@ -1,5 +1,6 @@
 ## Running vanilla clingo
 This part of the guide is dedicated to showing how to modify the [example runscript](https://github.com/potassco/benchmark-tool/blob/master/runscripts/runscript-example.xml) so that it can run clingo with its default settings on a SLURM cluster. Hopefully, while reading this you learn which parts you need to modify to run your clingo variants/programs.
+The modified runscript can be found in the files folder.
 
 ## Changes to the runscript
 Most changes to the runscript are very simple. The first change is on line 1. We change the value of *output* to "vanilla-clingo" since we want our benchmark folder to have a meaningful name.
@@ -9,7 +10,7 @@ The second change is on line 7. Here, we want to define which script to use to r
 #!/bin/bash
 clingo $@
 ```
-After writing this file, remember to make it executable.
+After writing this file, remember to make it executable. This file can be found in the files folder.
 
 #### Multiple settings
 Let's say that for our experiments we want to see how the "jumpy" configuration compared to the base clingo configuration. So, we define two settings:
