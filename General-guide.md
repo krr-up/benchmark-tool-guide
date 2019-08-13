@@ -34,7 +34,7 @@ The third folder in the structure is given by the information in line 3:
 <machine name="zuse" cpu="24x8xE5520@2.27GHz" memory="24GB"/>
 ```
 
-The values of *cpu* and *memory* are irrelevant for the naming. The second folder will be named using the value in *name*. In this case, "zuse".  
+The values of *cpu* and *memory* are irrelevant for the naming. In this case, the third folder is named "zuse".  
   
 
 After this, the folders are named based on the structure of the benchmark instances and the instance names.  
