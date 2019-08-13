@@ -19,7 +19,9 @@ In the next few sections, I will explain how the example file [runscript-example
 ### Folder structure  
 
 When running the runscript (we will see how later) a folder structure is created. The name of the first folder in the tree is given by the first line in the script:  
-```<runscript output="output-folder">```  
+```
+<runscript output="output-folder">
+```  
 In this case, the name of the folder is "output-folder". It is recommended that the name should be changed to something meaningful and representative of the benchmark you are running.  
   
 
@@ -27,7 +29,11 @@ The name of the second folder is given by the project name which is explained la
   
 
 The third folder in the structure is given by the information in line 3:  
-```<machine name="zuse" cpu="24x8xE5520@2.27GHz" memory="24GB"/>```  
+
+```
+<machine name="zuse" cpu="24x8xE5520@2.27GHz" memory="24GB"/>
+```
+
 The values of *cpu* and *memory* are irrelevant for the naming. The second folder will be named using the value in *name*. In this case, "zuse".  
   
 
@@ -100,7 +106,11 @@ Another fix is to change the instances so that they do not contain those "#inclu
 ### Run arguments  
 
 The arguments that are going to be used by clingo are given in line 9.  
-```<setting name="setting-1" cmdline="'--stats --quiet=1,0'" tag="basic" />```  
+
+```
+<setting name="setting-1" cmdline="'--stats --quiet=1,0'" tag="basic" />
+```  
+
 The value of *name* is an identifier for the arguments given in *cmdline* and will appear as the name of this configuration when evaluating the results. The value of *cmdline* can be any valid string that can be given to the solver you are using. Finally, the value of *tag* is also an identifier for this configuration but only within this runscript.  
   
 
@@ -150,7 +160,7 @@ Projects are where all of the above elements come together to define a complete 
 </project>  
 ```  
 
-Previously, all of the components from before were independent of each other. When defining a project we pick the components we want to form the benchmark. The values of *job*, *machine*  *benchmark* and *tag* refers to previously defined components. The *tag* refers to all settings that have that same tag. There is also a special value that *tag* can take, \*ALL\*, that refers to all settings.  
+Previously, all of the components from before were independent of each other. When defining a project we pick the components we want to form the benchmark. The values of *job*, *machine*, *benchmark* and *tag* refers to previously defined components. The *tag* refers to all settings that have that same tag. There is also a special value that *tag* can take, \*ALL\*, that refers to all settings. The value of *name* is what gives the name of the second folder in the folder structure reference before.
   
 
 The project in lines 21 to 23 is defined in the same manner. The only difference is that it will use a seqjob instead of a pbsjob.  
