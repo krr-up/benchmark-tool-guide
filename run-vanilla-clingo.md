@@ -21,7 +21,7 @@ Let's say that for our experiments we want to see how the "jumpy" configuration 
 Notice the changes to the values of *name* and *tag* so that they are descriptive. Also, see that we added the additional "--configuration=jumpy" to  *cmdline* of the jumpy setting.
 
 #### Deleting unused lines
-In this example we are trying to run benchmarks on a SLURM machine. As mentioned in the general guide, pbsjob is the appropriate choice. We delete line 13 and lines 21-23 since they refer to seqjob.
+In this example, we are trying to run benchmarks on a SLURM machine. As mentioned in the general guide, pbsjob is the appropriate choice. We delete line 13 and lines 21-23 since they refer to seqjob.
 
 #### Adapting pbsjob
 Line 15  can be mostly left as it is. The one change we are making is adding an explicit reference to *partition* and setting its value to "long".
@@ -32,7 +32,7 @@ Line 15  can be mostly left as it is. The one change we are making is adding an 
 #### Project changes
 The last changes needed are to lines 25-27. First, we want to name our project something meaningful. We set the value of *name* to "base-vs-jumpy"
 
-The value of *tag* is no longer refering to anything. Both settings that we have have different tags but we still want to run both in this benchmark. To manage this we simply set the value of *tag* to the special value \*ALL\*
+The value of *tag* is no longer referring to anything. Both settings that we have different tags but we still want to run both in this benchmark. To manage this we simply set the value of *tag* to the special value \*ALL\*
 ```
 <project name="base-vs-jumpy" job="pbs-gen">
 	<runtag machine="zuse" benchmark="no-pigeons" tag="*ALL*"/>
