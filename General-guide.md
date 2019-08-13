@@ -3,7 +3,7 @@
 # Introduction  
 
 This guide will help you understand and use the benchmark tool found in [https://github.com/potassco/benchmark-tool](https://github.com/potassco/benchmark-tool).  
-This guide will teach you about the xml configuration file, how to use that file to generate benchmarks and lastly, how to run and evaluate those benchmarks.  
+It will teach you about the xml configuration file, how to use that file to generate benchmarks and lastly, how to run and evaluate those benchmarks.  
   
 
 # XML Runscript  
