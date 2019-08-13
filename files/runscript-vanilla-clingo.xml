@@ -1,0 +1,24 @@
+<runscript output="vanilla-clingo">
+
+	<machine name="zuse" cpu="24x8xE5520@2.27GHz" memory="24GB"/>
+	
+  	<config name="seq-generic" template="templates/seq-generic.sh"/>
+  
+	<system name="clingo" version="vanilla" measures="clasp" config="seq-generic">
+
+    		<setting name="base" cmdline="'--stats --quiet=1,0'" tag="basic" />
+            <setting name="jumpy" cmdline="'--configuration=jumpy --stats --quiet=1,0'" tag="jumpy" />
+
+    </system>
+
+	<pbsjob name="pbs-gen" timeout="1200" runs="1" script_mode="timeout" walltime="23:59:59" cpt="4" partition="long"/>
+
+	<benchmark name="no-pigeons">
+		<folder path="benchmarks/clasp/"><ignore prefix="pigeons"/></folder>
+	</benchmark>
+
+	<project name="base-vs-jumpy" job="pbs-gen">
+		<runtag machine="zuse" benchmark="no-pigeons" tag="*ALL*"/>
+	</project>
+
+</runscript>
