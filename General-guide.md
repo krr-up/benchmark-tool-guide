@@ -205,12 +205,10 @@ The script writes the results with an xml format to the standard output. We save
 Once we have the evaluated benchmarks we can convert them into a formatted csv file. We do this with the "bconv" script:  
 
 ```  
-$ ./bconv benchmark-evaluated.xml results.csv -m time:t  
+$ ./bconv -m time:t benchmark-evaluated.xml > results.ods
 ```  
 
-The run time will now be found in a csv named results.csv. The .m also takes multiple values. The format is a comma-separated list of measures of form name[:{t,to,-}] to include in the table (optional argument determines coloring)  
-  
-  
+The run time will now be found in a csv named results.ods. The .m also takes multiple values. The format is a comma-separated list of measures of form name[:{t,to,-}] to include in the table (optional argument determines coloring)   
 
 How the results are evaluated depends on the value of *measures* that is found in line 7. The value refers to a python file with the same name located in the directory:  
 
