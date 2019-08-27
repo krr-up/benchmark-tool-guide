@@ -42,19 +42,16 @@ The value of *tag* is no longer referring to anything. Both settings that we hav
 ## Running it on the cluster
 For this part, we assume that you have cloned the benchmark tool and that the modified runscript was saved into the runscript folder of the benchmark tool.
 
-The first thing we have to do is to copy our "clingo-vanilla" script into the programs folder and make sure that it is executable. Following the instruction of the general guide, we now run the bgen script
+The first thing we have to do is to copy our "clingo-vanilla" script into the programs folder and make sure that it is executable. Following the instruction of the general guide, we now run the bgen script.
 ```
 $ ./bgen runscripts/runscript-vanilla-clingo.xml 
 ```
 
-This creates a folder named "vanilla-clingo". Now, we navigate into the folder that has the machine name.
+This creates a folder named "vanilla-clingo". Now, we can execute the start script:
 ```
-$ cd vanilla-clingo/base-vs-jumpy/zuse
+$ ./vanilla-clingo/base-vs-jumpy/zuse/start.sh
 ```
-Here we can execute the start script
-```
-$ ./start.sh
-```
+
 This starts the benchmark. We can check that they are running with the "squeue" command.
 
 When the benchmarks have finished running we can now run the beval script.

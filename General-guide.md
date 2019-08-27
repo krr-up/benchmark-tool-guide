@@ -118,16 +118,16 @@ If you are looking to run more than one configuration, you can just copy and pas
 
 Finally, there is an additional argument that is not present in the example, *pbstemplate*. The default value for this argument is "templates/single.pbs" which can be found [here](https://github.com/potassco/benchmark-tool/blob/master/templates/single.pbs) and is only relevant for pbsjobs(described below). 
 
-This template is used when we want to group calls to instances into one job. In short, this template describes how a single job will look like. This includes setting up the walltime for the job, how the environment is(for example, if we want to load a virtual/conda env or anything else) and in which order the instances will be run.
+This template is used when we want to group calls to instances into one job. In short, this template describes how a single job will look like. This includes setting up the walltime for the job, how the environment is (for example, if we want to load a virtual/conda env or anything else) and in which order the instances will be run.
 
-Looking at the file, the first few lines are self explanatory. They set the various values relating to SLURM. The lines 14 onwards are just the calls to the scripts that run the instances. The most important line is line 12. This is where we should set up the important environment wher the instances should run. For example, activating the environment that has clingo installed. I recommend to do this explicitly in this file instead of sourcing it a .bashrc file.
+Looking at the file, the first few lines are self explanatory. They set the various values relating to SLURM. The lines 14 onwards are just the calls to the scripts that run the instances. The most important line is line 12. This is where we should set up the important environment where the instances should run. For example, activating the environment that has clingo installed. I recommend to do this explicitly in this file instead of sourcing it a .bashrc file.
 
 A very important line that should always be included is 
 
 ```
 source /etc/profile.d/modules.sh
 ```
-modu
+
 Adding this line lets you load modules found in the cluster such as anaconda or gcc.
 
 ### Defining Jobs  
@@ -139,7 +139,7 @@ A job is basically where you set the parameters on how long a single clingo run 
 <seqjob name="seq-gen" timeout="900" runs="1" script_mode="timeout" walltime="50:00:00" parallel="1"/>  
 ```  
 
-The benchmark tool can generate two types of jobs. Seqjobs that are meant to be run on a regular machine and pbsjobs that are meant to be run on a machine with SLURM. Line 13 defines a seqjob, as seen at the beginning of the line. As usual, it has a *name* which is an identifier for this particular job. *timeout* is the maximum amount of time in seconds a single run can take, *runs* is how many runs will be done for each instance. *walltime* is the maximum amount of time that running all instances can take(format is HH:MM:SS).  
+The benchmark tool can generate two types of jobs. Seqjobs that are meant to be run on a regular machine and pbsjobs that are meant to be run on a machine with SLURM. Line 13 defines a seqjob, as seen at the beginning of the line. As usual, it has a *name* which is an identifier for this particular job. *timeout* is the maximum amount of time in seconds a single run can take, *runs* is how many runs will be done for each instance. *walltime* is the maximum amount of time that running all instances can take (format is HH:MM:SS).  
   
 
 Line 15 defines a pbsjob:  
@@ -208,7 +208,7 @@ Once we have the evaluated benchmarks we can convert them into a formatted csv f
 $ ./bconv -m time:t benchmark-evaluated.xml > results.ods
 ```  
 
-The run time will now be found in a csv named results.ods. The .m also takes multiple values. The format is a comma-separated list of measures of form name[:{t,to,-}] to include in the table (optional argument determines coloring)   
+The run time will now be found in a csv named results.ods. The -m option also takes multiple values. The format is a comma-separated list of measures of form name[:{t,to,-}] to include in the table (optional argument determines coloring).
 
 How the results are evaluated depends on the value of *measures* that is found in line 7. The value refers to a python file with the same name located in the directory:  
 
@@ -227,17 +227,12 @@ time, models, choices, conflicts, restarts, optimum, status, interrupted, error,
 
 #### Things to make sure are done
 This is a list of things to keep in mind when starting to run the benchmarks:
-- Make sure that:
-	the runsolver in the seq-generic.sh file has the correct name
-	
-	the single.pbs file loads the correct environment
-	
-	the bash script is executable
-	
-	the benchmark folder is correct and is ideally an absolute path
-	
-	the cmdline in settings contain the "--stats" argument
-
+Make sure that:
+	- the runsolver in the seq-generic.sh file has the correct name
+	- the single.pbs file loads the correct environment
+	- the bash script is executable
+	- the benchmark folder is correct and is ideally an absolute path
+	- the cmdline in settings contain the "--stats" argument
 
 #### Inspecting for errors
 A quick way to inspect the benchmarks for errors once they are done is to use a find command to search for the clingo/runsolver output files and then parse each file for some error message.
