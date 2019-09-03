@@ -79,10 +79,16 @@ If you don't have the specific runsolver used in the script, you can simply chan
 
 ### Run settings  
 
-The run settings are given in the example from line 7 to line 11. line 7 starts describing how the *system* looks like. The values of *name* and *version* work together to describe the name of a **bash script** named **{name}-{version}** and is found in the **programs** folder of the benchmark-tool. So, in the case of the example, the solver given to the template file described in the configuration is *programs/clingo-4.5.4*. Since this is a regular bash script you can put whatever you want in here.  
+The run settings are given in the example from line 7 to line 11. line 7 starts describing how the *system* looks like. 
+
+```
+<system name="clingo" version="4.5.4" measures="clasp" config="seq-generic">
+```
+
+The values of *name* and *version* work together to describe the name of a **bash script** named **{name}-{version}** and is found in the **programs** folder of the benchmark-tool. So, in the case of the example, the solver given to the template file described in the configuration is *programs/clingo-4.5.4*. Since this is a regular bash script you can put whatever you want in here.  
   
 
-The value in *measures* describes how the results will be evaluated once the benchmark is done and you have the results. We will go into detail on this later on.  
+The value in *measures* describes how the results will be evaluated once the benchmark is done and you have the results. This value has absolutely no effect on the bash script. We will go into detail on this later on.
   
 
 The value of *config* refers to which configuration should be used to run this solver. This is where the value of *name* in line 5 comes into play.  
@@ -154,8 +160,9 @@ Most values are the same as with seqjobs. *cpt* defines how many cores can be us
 For pbsjobs, there is an interaction between *timeout* and *walltime*. When creating the benchmarks, the walltime will always be respected. So, if its not possible to run all instances sequentially inside the walltime specified, they will be split into as many jobs as necessary so that the walltime is never surpassed. For example, if the walltime is 25 hours and you have 100 instances with a timeout of 1 hour each, there will be 4 jobs, each with 25 instances which will be run in parallel.  
   
 
-As a final note, this pbsjob example does not include the *partition* argument. Its value is the name of the partition that will be used when running the jobs in the SLURM machine. The default value for it is "kr". Other values for this argument can be "short" and "long". If short is used the walltime can not exceed 24 hours.  
-  
+This pbsjob example does not include the *partition* argument. Its value is the name of the partition that will be used when running the jobs in the SLURM machine. The default value for it is "kr". Other values for this argument can be "short" and "long". If short is used the walltime can not exceed 24 hours.
+
+As a final note, despite having "pbsjob" and "seqjob" both use the same seq-generic.sh file.
 
 ### Benchmarks - Instance location  
 
@@ -200,7 +207,9 @@ $ ./beval path/to/runscript.xml > benchmark-evaluated.xml
 ```  
 
 The script writes the results with an xml format to the standard output. We save this output into a file with a name that you choose.  
-  
+
+Now is the time to go back to the "Run settings" section where the value of *measures* is given. This value will refer to a python file with the same name(with the .py extension) located in the src/benchmarktool/resultparser folder. In this file a function with the same name is defined that returns the parsed statistics of the run when the ./beval script is called.
+
 
 Once we have the evaluated benchmarks we can convert them into a formatted csv file. We do this with the "bconv" script:  
 
@@ -220,7 +229,7 @@ The value in the example is "clasp". This means that we use the file [clasp.py](
 Which values can be given to the -m option also depend on what values the file can process. In this case, the values are:  
 
 ```  
-time, models, choices, conflicts, restarts, optimum, status, interrupted, error, memerror  
+time, models, choices, conflicts, restarts, optimum, interrupted, error, memerror  
 ```
 
 ### Quick tips
@@ -228,11 +237,11 @@ time, models, choices, conflicts, restarts, optimum, status, interrupted, error,
 #### Things to make sure are done
 This is a list of things to keep in mind when starting to run the benchmarks:
 Make sure that:
-	- the runsolver in the seq-generic.sh file has the correct name
-	- the single.pbs file loads the correct environment
-	- the bash script is executable
-	- the benchmark folder is correct and is ideally an absolute path
-	- the cmdline in settings contain the "--stats" argument
+* the runsolver in the seq-generic.sh file has the correct name
+* the single.pbs file loads the correct environment
+* the bash script is executable
+* the benchmark folder is correct and is ideally an absolute path
+* the cmdline in settings contain the "--stats" argument
 
 #### Inspecting for errors
 A quick way to inspect the benchmarks for errors once they are done is to use a find command to search for the clingo/runsolver output files and then parse each file for some error message.
