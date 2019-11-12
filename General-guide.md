@@ -207,6 +207,12 @@ The script writes the results with an xml format to the standard output. We save
 
 Now is the time to go back to the "Run settings" section where the value of *measures* is given. This value will refer to a python file with the same name(with the .py extension) located in the src/benchmarktool/resultparser folder. In this file a function with the same name is defined that returns the parsed statistics of the run when the ./beval script is called.
 
+The value in the example is "clasp". This means that we use the file [clasp.py](https://github.com/potassco/benchmark-tool/blob/master/src/benchmarktool/resultparser/clasp.py) to evaluate the results.  
+Which values can be given to the -m option used in the next script also depend on what values the file can process. In this case, the values are:  
+
+```  
+time, models, choices, conflicts, restarts, optimum, interrupted, error, memerror  
+```
 
 Once we have the evaluated benchmarks we can convert them into a formatted csv file. We do this with the "bconv" script:  
 
@@ -216,23 +222,11 @@ $ ./bconv -m time:t benchmark-evaluated.xml > results.ods
 
 The run time will now be found in a csv named results.ods. The -m option also takes multiple values. The format is a comma-separated list of measures of form name[:{t,to,-}] to include in the table (optional argument determines coloring).
 
-How the results are evaluated depends on the value of *measures* that is found in line 7. The value refers to a python file with the same name located in the directory:  
-
-```  
-benchmark-tool/src/benchmarktool/resultparser  
-```  
-
-The value in the example is "clasp". This means that we use the file [clasp.py](https://github.com/potassco/benchmark-tool/blob/master/src/benchmarktool/resultparser/clasp.py) to evaluate the results.  
-Which values can be given to the -m option also depend on what values the file can process. In this case, the values are:  
-
-```  
-time, models, choices, conflicts, restarts, optimum, interrupted, error, memerror  
-```
-
 ### Quick tips
 
 #### Things to make sure are done
-This is a list of things to keep in mind when starting to run the benchmarks:
+This is a list of things to keep in mind when starting to run the benchmarks.
+
 Make sure that:
 * the runsolver in the seq-generic.sh file has the correct name
 * the single.pbs file loads the correct environment
