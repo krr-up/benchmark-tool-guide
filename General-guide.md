@@ -123,7 +123,7 @@ Finally, there is an additional argument that is not present in the example, *pb
 
 This template is used when we want to group calls to instances into one job. In short, this template describes how a single job will look like. This includes setting up the walltime for the job, how the environment is (for example, if we want to load a virtual/conda env or anything else) and in which order the instances will be run.
 
-Looking at the file, the first few lines are self explanatory. They set the various values relating to SLURM. The lines 14 onwards are just the calls to the scripts that run the instances. The most important line is line 12. This is where we should set up the important environment where the instances should run. For example, activating the environment that has clingo installed. I recommend to do this explicitly in this file instead of sourcing it a .bashrc file.
+Looking at the file, the first few lines are self explanatory. They set the various values relating to SLURM. The lines 14 onwards are just the calls to the scripts that run the instances. The most important line is line 12. This is where we should set up the important environment where the instances should run. For example, activating the environment that has clingo installed. I recommend to do this explicitly in this file instead of sourcing a .bashrc file.
 
 A very important line that should always be included is 
 
@@ -131,7 +131,7 @@ A very important line that should always be included is
 source /etc/profile.d/modules.sh
 ```
 
-Adding this line lets you load modules found in the cluster such as anaconda or gcc.
+Adding this line lets you load modules found in the cluster such as anaconda or gcc. Sourcing this will let you load any modules you need (e.g. conda).
 
 ### Defining Jobs  
 
