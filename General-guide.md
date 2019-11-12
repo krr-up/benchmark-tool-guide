@@ -75,7 +75,20 @@ $CAT "{run.file}" | "{run.root}/programs/runsolver-3.3.4" \
 
 The script has a default memory limit of 20 000 MB which can be changed by modifying the value of the ```-M``` argument.  
 If you don't have the specific runsolver used in the script, you can simply change its name to match the one you have. As can be seen from the file the runsolver is expected to be in the programs folder of the benchmark-tool folder.  
+
+Small tip: If your instances have an "#include" directive they may not work unless they have **absolute** paths. An easy fix for this is to not pipe the text of the instance and instead put the instance as a regular argument to the solver:  
+
+```  
+"{run.root}/programs/runsolver-3.3.4" \  
+-M 20000 \  
+-w runsolver.watcher \  
+-o runsolver.solver \  
+-W {run.timeout} \  
+"{run.root}/programs/{run.solver}" {run.file} {run.args}  
+```  
   
+
+Another fix is to change the instances so that they do not contain those "#include" directives. This is, however, not always possible or the best course of action.  
 
 ### Run settings  
 
@@ -91,23 +104,7 @@ The values of *name* and *version* work together to describe the name of a **bas
 The value in *measures* describes how the results will be evaluated once the benchmark is done and you have the results. This value has absolutely no effect on the bash script. We will go into detail on this later on.
   
 
-The value of *config* refers to which configuration should be used to run this solver. This is where the value of *name* in line 5 comes into play.  
-  
-
-Small tip: If your instances have an "#include" directive they may not work unless they have **absolute** paths. An easy fix for this is to not pipe the text of the instance and instead put the instance as a regular argument to the solver:  
-
-```  
-"{run.root}/programs/runsolver-3.3.4" \  
--M 20000 \  
--w runsolver.watcher \  
--o runsolver.solver \  
--W {run.timeout} \  
-"{run.root}/programs/{run.solver}" {run.file} {run.args}  
-```  
-  
-
-Another fix is to change the instances so that they do not contain those "#include" directives. This is, however, not always possible or the best course of action.  
-  
+The value of *config* refers to which configuration should be used to run this solver. This is where the value of *name* in line 5 comes into play.
 
 ### Run arguments  
 
