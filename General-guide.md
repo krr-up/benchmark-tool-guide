@@ -131,7 +131,7 @@ A very important line that should always be included is
 source /etc/profile.d/modules.sh
 ```
 
-Adding this line lets you load modules found in the cluster such as anaconda or gcc. Sourcing this will let you load any modules you need (e.g. conda).
+Adding this line lets you load modules found in the cluster such as anaconda or gcc.
 
 ### Defining Jobs  
 
