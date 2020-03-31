@@ -6,11 +6,16 @@ We will now take a look at how the scripts work, how to change them to fit your 
 
 As the example script, we will look at [clasp.py](https://github.com/potassco/benchmark-tool/blob/master/src/benchmarktool/resultparser/clasp.py).
 
-First, we take a look at the naming scheme. Inside the file, there is a single function definition. This function **must** have the same name as the file. The function also takes 3 arguments. The first argument is the path to the root directory of the benchmark, that is, the path to where the script is located that runs the benchmarks and the results are saved. The second argument, *runspec* gives us access to the data that we defined in the *runscript* file. The third argument is an instance class that includes information such as the location and the name of the instance.
+First, we take a look at the naming scheme. Inside the file, there is a single function definition. This function **must** have the same name as the file. The function also takes 3 arguments. The first argument is the path to the root directory of the benchmark and where the results are saved. The second argument, *runspec*, gives us access to the data that we defined in the *runscript* file. The third argument is an instance class that includes information such as the location and the name of the instance.
 
 The function is applied to every "run" individually. It gathers the data for a particular run in basically three steps. First, it reads the relevant output files. Secondly, it parses the text in those files to find the data we need. Third, it saves the data in the correct format.
 
-Reading the files takes place in lines 32 and 33. Since we are using a runsolver to run the benchmarks, the results of the run are saved into a file named "runsolver.solver". The statistics that the runsolver keeps track of(e.g. memory usage and time) are saved into a "runsolver.watcher" (The name of these files is defined in the run template). 
+Reading the files takes place in lines 32 and 33. Line 32 loops through the relevant files and line 33 reads the file line by line.
+```
+    for f in ["runsolver.solver", "runsolver.watcher"]:
+        for line in codecs.open(os.path.join(root, f), errors='ignore', encoding='utf-8'):
+```
+Since we are using a runsolver to run the benchmarks, the results of the run are saved into a file named "runsolver.solver". The statistics that the runsolver keeps track of(e.g. memory usage and time) are saved into a "runsolver.watcher" (The name of these files is defined in the run template). 
 
 To parse the files we make use of regular expressions. In line 12, we define a dictionary that contains several regular expressions that are able to parse a specific statistic. The key of the dictionary is the name of the statistic we want. The value is a tuple where the first value is the type of the data that is parsed and the second value is the regular expression that can parse the value. We make use of this dictionary in lines 34 to 36. For each of the files we loop through, we apply each regular expression in the dictionary to the whole text. If a match is found for any regex then we save the result into the variable *res*. The res variable is also a dictionary with a similar structure as the regex dictionary. The difference is that res has the actual parsed value in the tuple instead of the regular expression. 
 
