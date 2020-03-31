@@ -22,3 +22,29 @@ To parse the files we make use of regular expressions. In line 12, we define a d
 After looping through the files and applying the regular expressions we proceed to build the actual *result* variable that we will return. The returned variable **MUST** be a list of triples where each triple has the format (name, data type, data).
 
 We are not limited to returning the values that we parse with the regex. We can do some extra work to extrapolate some other data or just simply return the data in a different format. For example, we could return an integer for each of the several "status" values. So, instead of return a "SATISFIABLE" string we could return a 1. In the same manner we could return 0 instead of "UNSATISFIABLE" and 2 instead of "OPTIMUM".
+
+
+### Adding your own statistics
+
+Adding more statistics to parse is fairly simple. We will ilustrate how with an example. Supposing that our output includes the following line:
+"Time to run function:	20.23s"
+
+The first step is to add an entry to the regex dictionary. The entry would look as follows:
+```
+"function_time" : ("float", re.compile(r"^Time to run function:[ ]*(?P<val>[0-9]+(\.[0-9]+)?)$"))
+```
+Once we add an entry it will always be applied to the files that we read and the match saved in the res variable. The second step would be to read the entry from the res variable as save it into the result variable in the correct format. This is already implemented in line 58. Every entry into the res variable is converted into the correct format and added to the result list.
+
+Suppose that we don't really care that much about how long the function runs, we only care that the time it takes is less than half of the total clingo runtime. In this case, we have to do some extra processing. After the regexes are applied to the files, we will have a "function_time" entry in the res variable. Using this, we can grab that value and also the value of the clingo runtime via the "time" key. Now, we can compare the values:
+
+```
+if (res["time"][1] / res["function_time"][1]) < 2:
+	result.append("function_time", "string", "acceptable")
+else:
+	result.append("function_time", "string", "unacceptable")
+```
+
+Afterwards, we have to delete the "function_time" entry from "res" so that it is not added to results later on when line 58 is executed:
+```
+del res["function_time"]
+```
