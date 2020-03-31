@@ -123,7 +123,7 @@ Finally, there is an additional argument that is not present in the example, *pb
 
 This template is used when we want to group calls to instances into one job. In short, this template describes how a single job will look like. This includes setting up the walltime for the job, how the environment is (for example, if we want to load a virtual/conda env or anything else) and in which order the instances will be run.
 
-Looking at the file, the first few lines are self explanatory. They set the various values relating to SLURM. The lines 14 onwards are just the calls to the scripts that run the instances. The most important line is line 12. This is where we should set up the important environment where the instances should run. For example, activating the environment that has clingo installed. I recommend to do this explicitly in this file instead of sourcing a .bashrc file.
+Looking at the file, the first few lines are self explanatory. They set the various values relating to SLURM. The lines 14 onwards are just the calls to the scripts that run the instances. The most important line is line 12. This is where we should set up the important environment where the instances should run. For example, activating the environment that has clingo installed. You can do this explicitly in this file or you can source a .bashrc file.
 
 A very important line that should always be included is 
 
@@ -235,7 +235,7 @@ Make sure that:
 * the cmdline in settings contain the "--stats" argument
 
 #### Inspecting for errors
-A quick way to inspect the benchmarks for errors once they are done is to use a find command to search for the clingo/runsolver output files and then parse each file for some error message.
+A quick way to inspect the benchmarks for errors once they are done is to use a *find* command to search for the clingo/runsolver output files and then parse each file for some error message.
 ```
 $ find myfolder -name runsolver.solver | xargs grep "error message" -i
 $ find myfolder -name runsolver.watcher | xargs grep "error message" -i
