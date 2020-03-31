@@ -207,7 +207,8 @@ The script writes the results with an xml format to the standard output. We save
 
 Now is the time to go back to the "Run settings" section where the value of *measures* is given. This value will refer to a python file with the same name(with the .py extension) located in the src/benchmarktool/resultparser folder. In this file a function with the same name is defined that returns the parsed statistics of the run when the ./beval script is called.
 
-The value in the example is "clasp". This means that we use the file [clasp.py](https://github.com/potassco/benchmark-tool/blob/master/src/benchmarktool/resultparser/clasp.py) to evaluate the results.  
+The value in the example is "clasp". This means that we use the file [clasp.py](https://github.com/potassco/benchmark-tool/blob/master/src/benchmarktool/resultparser/clasp.py) to evaluate the results. You can find a more detailed view into this files in the [Evaluation.md](https://github.com/kstrauch94/benchmark-tool-guide/blob/master/Evaluation.md) document.
+
 Which values can be given to the -m option used in the next script also depend on what values the file can process. In this case, the values are:  
 
 ```  
