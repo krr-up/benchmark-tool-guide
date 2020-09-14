@@ -191,9 +191,21 @@ Running the script is very simple. Simply go to the benchmark-tool folder and ru
 $ ./bgen path/to/runscript.xml  
 ```  
 
-where runscript.xml is the runscript that you want to use. This will create a folder structure using the values given in the script. To start running the benchmark, navigate 3 folders down to the folder with the name of the machine. There should be either a python or bash file named "start" with the appropriate extension. Execute this file to run the benchmarks.  
+where runscript.xml is the runscript that you want to use. This will create a folder structure using the values given in the script. To start running the benchmark, navigate 3 folders down to the folder with the name of the machine. There should be either a python or bash file named "start" with the appropriate extension. Execute this file to run the benchmarks.
+
+To execute the python script simply call(assuming you are in the folder):
+
+```
+$ python start.py
+```
   
-  
+To execute the bash file(assuming you are in the folder):
+```
+$ ./start.sh
+```
+
+It is not necessary to use an sbatch command for this file. The file itself will call a number of pbs files using sbatch in order to add your bencmarking jobs to the cluster.
+
 
 ## Evaluating  
 
